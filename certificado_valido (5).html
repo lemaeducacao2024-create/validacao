@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Certificado Válido | LEMA EDU</title>
+<style>
+  :root{
+    --navy:#0b1220;
+    --blue:#0652dd;
+    --blue-light:#4f95e0;
+    --text-soft:#647089;
+    --bg:#f4f8fd;
+    --card:#ffffff;
+    --line:rgba(15,23,41,0.08);
+  }
+
+  *{box-sizing:border-box;}
+
+  html,body{
+    height:100%;
+    margin:0;
+  }
+
+  body{
+    font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background:
+      radial-gradient(circle at 18% 12%, rgba(6,82,221,0.08), transparent 42%),
+      radial-gradient(circle at 88% 85%, rgba(79,149,224,0.10), transparent 46%),
+      var(--bg);
+    color:var(--navy);
+    min-height:100%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    padding:24px;
+    overflow-x:hidden;
+  }
+
+  /* ---------- rising blue bubbles ---------- */
+  .bg-glow{
+    position:fixed;
+    inset:0;
+    z-index:0;
+    pointer-events:none;
+    overflow:hidden;
+  }
+  .bg-glow span{
+    position:absolute;
+    bottom:-15%;
+    border-radius:50%;
+    background:radial-gradient(circle at 32% 28%, rgba(255,255,255,0.95), rgba(120,175,235,0.45) 45%, rgba(6,82,221,0.12) 75%, rgba(6,82,221,0) 100%);
+    border:1px solid rgba(79,149,224,0.35);
+    opacity:.75;
+    animation:float linear infinite;
+  }
+  .bg-glow span:nth-child(1){ left:6%;  width:16px; height:16px; animation-duration:15s; animation-delay:0s; }
+  .bg-glow span:nth-child(2){ left:16%; width:34px; height:34px; animation-duration:19s; animation-delay:2s; }
+  .bg-glow span:nth-child(3){ left:28%; width:10px; height:10px; animation-duration:12s; animation-delay:1s; }
+  .bg-glow span:nth-child(4){ left:40%; width:26px; height:26px; animation-duration:17s; animation-delay:4.5s; }
+  .bg-glow span:nth-child(5){ left:52%; width:44px; height:44px; animation-duration:22s; animation-delay:0.5s; }
+  .bg-glow span:nth-child(6){ left:64%; width:14px; height:14px; animation-duration:14s; animation-delay:3s; }
+  .bg-glow span:nth-child(7){ left:74%; width:30px; height:30px; animation-duration:18s; animation-delay:1.5s; }
+  .bg-glow span:nth-child(8){ left:84%; width:20px; height:20px; animation-duration:16s; animation-delay:5s; }
+  .bg-glow span:nth-child(9){ left:92%; width:38px; height:38px; animation-duration:21s; animation-delay:2.5s; }
+  .bg-glow span:nth-child(10){left:36%; width:18px; height:18px; animation-duration:13s; animation-delay:6s; }
+  .bg-glow span:nth-child(11){left:8%;  width:24px; height:24px; animation-duration:20s; animation-delay:7.5s; }
+  .bg-glow span:nth-child(12){left:60%; width:12px; height:12px; animation-duration:11s; animation-delay:3.8s; }
+
+  @keyframes float{
+    0%{ transform:translateY(0) translateX(0); opacity:0;}
+    8%{opacity:.8;}
+    92%{opacity:.35;}
+    100%{ transform:translateY(-118vh) translateX(24px); opacity:0;}
+  }
+
+  /* ---------- intro loader ---------- */
+  #loader{
+    position:fixed;
+    inset:0;
+    z-index:20;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:22px;
+    background:var(--bg);
+    transition:opacity .5s ease, visibility .5s ease;
+  }
+  #loader.hide{
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+  }
+  .loader-ring{
+    position:relative;
+    width:64px;
+    height:64px;
+    animation:loaderPulse 1.8s ease-in-out infinite;
+  }
+  @keyframes loaderPulse{
+    0%,100%{ transform:scale(1); }
+    50%{ transform:scale(1.08); }
+  }
+  .loader-ring::before,
+  .loader-ring::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    border-radius:50%;
+    border:3px solid rgba(6,82,221,0.12);
+  }
+  .loader-ring::after{
+    border-color:var(--blue) transparent transparent transparent;
+    animation:spin .9s cubic-bezier(.5,.1,.5,.9) infinite;
+  }
+  .loader-ring svg{
+    position:absolute;
+    inset:0;
+    margin:auto;
+    width:24px;
+    height:24px;
+    stroke:var(--blue);
+    fill:none;
+    stroke-width:2.4;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+    opacity:.95;
+  }
+  @keyframes spin{
+    to{ transform:rotate(360deg); }
+  }
+  .loader-text{
+    font-size:13.5px;
+    letter-spacing:.03em;
+    color:var(--text-soft);
+    display:flex;
+    align-items:center;
+    gap:2px;
+  }
+  .loader-text .dots span{
+    animation:blink 1.4s infinite;
+    opacity:0;
+  }
+  .loader-text .dots span:nth-child(2){ animation-delay:.2s; }
+  .loader-text .dots span:nth-child(3){ animation-delay:.4s; }
+  @keyframes blink{
+    0%,80%,100%{ opacity:0; }
+    40%{ opacity:1; }
+  }
+
+  /* ---------- reveal of main content ---------- */
+  .content{
+    opacity:0;
+    transform:translateY(14px);
+    transition:opacity .7s ease, transform .7s ease;
+  }
+  .content.show{
+    opacity:1;
+    transform:translateY(0);
+  }
+
+  /* ---------- card ---------- */
+  .card{
+    position:relative;
+    z-index:1;
+    width:100%;
+    max-width:480px;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:20px;
+    padding:44px 36px 32px;
+    text-align:center;
+    box-shadow:0 30px 60px -24px rgba(15,23,41,0.18);
+  }
+
+  /* seal / check animation */
+  .seal{
+    position:relative;
+    width:112px;
+    height:112px;
+    margin:0 auto 22px;
+  }
+  .seal .ring{
+    position:absolute;
+    inset:0;
+    border-radius:50%;
+    background:radial-gradient(circle, rgba(6,82,221,0.28), rgba(6,82,221,0) 70%);
+    opacity:0;
+  }
+  body.revealed .seal .ring{
+    animation:pulse 2.6s ease-out infinite;
+  }
+  .seal .ring.delay{
+    animation-delay:1.3s;
+  }
+  @keyframes pulse{
+    0%{ transform:scale(0.6); opacity:.9; }
+    100%{ transform:scale(1.9); opacity:0; }
+  }
+  .seal .circle{
+    position:absolute;
+    inset:14px;
+    border-radius:50%;
+    background:linear-gradient(135deg, var(--blue), var(--blue-light));
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow:0 10px 25px -6px rgba(6,82,221,0.45);
+  }
+  .seal svg{
+    width:42px;
+    height:42px;
+    stroke:#fff;
+    fill:none;
+    stroke-width:3.2;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+    stroke-dasharray:48;
+    stroke-dashoffset:48;
+  }
+  body.revealed .seal svg{
+    animation:draw .6s ease-out .2s forwards;
+  }
+  @keyframes draw{
+    to{ stroke-dashoffset:0; }
+  }
+
+  h1{
+    font-size:34px;
+    letter-spacing:.3px;
+    margin:0 0 10px;
+    color:var(--navy);
+    font-weight:800;
+  }
+  h1 span{
+    color:var(--blue);
+    position:relative;
+    display:inline-block;
+    text-shadow:0 0 18px rgba(79,149,224,0.35);
+  }
+  body.revealed h1 span{
+    animation:glow 2.4s ease-in-out infinite;
+  }
+  @keyframes glow{
+    0%,100%{ text-shadow:0 0 14px rgba(79,149,224,0.3); }
+    50%{ text-shadow:0 0 26px rgba(6,82,221,0.55); }
+  }
+
+  .subtitle{
+    color:var(--text-soft);
+    font-size:14.5px;
+    line-height:1.5;
+    margin:0 0 22px;
+  }
+
+  .badge{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    background:rgba(6,82,221,0.08);
+    border:1px solid rgba(79,149,224,0.35);
+    color:var(--blue);
+    font-size:12.5px;
+    font-weight:600;
+    letter-spacing:.03em;
+    padding:8px 16px;
+    border-radius:999px;
+    margin-bottom:28px;
+  }
+  .badge .dot{
+    width:7px;
+    height:7px;
+    border-radius:50%;
+    background:#1fb15c;
+    box-shadow:0 0 8px rgba(31,177,92,0.6);
+  }
+
+  .details{
+    text-align:left;
+    background:rgba(15,23,41,0.03);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:18px 20px;
+    margin-bottom:26px;
+  }
+  .details dt{
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:.06em;
+    color:#8a93ab;
+    margin-top:12px;
+  }
+  .details dt:first-child{margin-top:0;}
+  .details dd{
+    margin:2px 0 0;
+    font-size:14.5px;
+    color:var(--navy);
+    font-weight:600;
+  }
+
+  .topics{
+    text-align:left;
+    background:rgba(15,23,41,0.03);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:16px 20px 18px;
+    margin-bottom:26px;
+  }
+  .topics-title{
+    margin:0 0 10px;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:.06em;
+    color:#8a93ab;
+  }
+  .topics ul{
+    margin:0;
+    padding:0;
+    list-style:none;
+    display:grid;
+    grid-template-columns:1fr;
+    gap:8px;
+  }
+  .topics li{
+    position:relative;
+    padding-left:18px;
+    font-size:13.5px;
+    color:#2b3550;
+    line-height:1.4;
+  }
+  .topics li::before{
+    content:"";
+    position:absolute;
+    left:0;
+    top:6px;
+    width:6px;
+    height:6px;
+    border-radius:50%;
+    background:var(--blue);
+  }
+
+  .support{
+    margin-top:22px;
+    font-size:12.5px;
+    color:var(--text-soft);
+  }
+  .support a{
+    color:var(--blue);
+    text-decoration:none;
+    font-weight:600;
+  }
+
+  footer{
+    position:relative;
+    z-index:1;
+    margin-top:34px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:10px;
+  }
+  footer img{
+    height:26px;
+    opacity:.95;
+  }
+  footer p{
+    margin:0;
+    font-size:11px;
+    color:#9aa3b8;
+    letter-spacing:.03em;
+  }
+</style>
+</head>
+<body>
+
+  <div id="loader">
+    <div class="loader-ring">
+      <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"></path><path d="M12 3l7 3v5c0 4.5-2.9 8.2-7 10-4.1-1.8-7-5.5-7-10V6l7-3z"></path></svg>
+    </div>
+    <p class="loader-text">Verificando certificado<span class="dots"><span>.</span><span>.</span><span>.</span></span></p>
+  </div>
+
+  <div class="bg-glow">
+    <span></span><span></span><span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span><span></span><span></span>
+  </div>
+
+  <div class="content">
+  <div class="card">
+    <div class="seal">
+      <div class="ring"></div>
+      <div class="ring delay"></div>
+      <div class="circle">
+        <svg viewBox="0 0 24 24"><polyline points="4 13 9 18 20 6"></polyline></svg>
+      </div>
+    </div>
+
+    <h1>Certificado <span>Válido</span></h1>
+    <p class="subtitle">Este certificado foi emitido pela LEMA EDU e consta em nossa base de registros oficiais.</p>
+
+    <div class="badge"><span class="dot"></span>AUTENTICAÇÃO CONFIRMADA</div>
+
+    <dl class="details">
+      <dt>Curso</dt>
+      <dd>Aprova RPPS</dd>
+
+      <dt>Modalidade</dt>
+      <dd>Remoto Gravado</dd>
+
+      <dt>Carga horária</dt>
+      <dd>04 horas</dd>
+
+      <dt>Emitido por</dt>
+      <dd>LEMA Educação</dd>
+    </dl>
+
+    <div class="topics">
+      <p class="topics-title">Conteúdo Programático</p>
+      <ul>
+        <li>Teoria Moderna das Carteiras</li>
+        <li>Alocação de Ativos</li>
+        <li>Avaliação de Desempenho</li>
+        <li>Gestão de Risco</li>
+        <li>Legislação Específica dos Investimentos do RPPS</li>
+        <li>Conhecimentos Básicos de Finanças</li>
+        <li>Renda Fixa e Renda Variável</li>
+        <li>Fundos de Investimentos</li>
+      </ul>
+    </div>
+
+    <p class="support">
+      Dúvidas sobre este certificado?
+      <a href="https://wa.me/5585991513323" target="_blank" rel="noopener">Fale com o suporte via WhatsApp</a>
+    </p>
+  </div>
+
+  <footer>
+    <img src="data:image/png;base64,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" alt="LEMA EDU">
+    <p>&copy; LEMA Educação — Todos os direitos reservados</p>
+  </footer>
+  </div>
+
+  <script>
+    window.addEventListener('load', function () {
+      setTimeout(function () {
+        var loader = document.getElementById('loader');
+        var content = document.querySelector('.content');
+        loader.classList.add('hide');
+        content.classList.add('show');
+        document.body.classList.add('revealed');
+        setTimeout(function () { loader.remove(); }, 550);
+      }, 1700);
+    });
+  </script>
+
+</body>
+</html>
