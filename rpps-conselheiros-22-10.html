@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Validação de Certificado | RPPS para Conselheiros</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@700;800&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --roxo:#0E3B47;
+    --roxo-escuro:#0E3B47;
+    --roxo-marca:#B8913A;
+    --lilas:#F3ECDC;
+    --verde:#1E9E62;
+    --verde-bg:#E7F6EE;
+    --papel:#F7F5EF;
+    --card:#FFFFFF;
+    --texto:#1F1A2B;
+    --suave:#655E73;
+    --linha:#E7E2D6;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Roboto',system-ui,sans-serif;background:var(--papel);color:var(--texto);line-height:1.5;min-height:100vh}
+
+  /* ---------- topo ---------- */
+  header{background:var(--roxo);padding:28px 16px 84px;position:relative;overflow:hidden}
+  header::after{content:"";position:absolute;left:-10%;right:-10%;bottom:-60px;height:120px;background:var(--papel);transform:rotate(-3deg)}
+  .logos{max-width:720px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;position:relative;z-index:1}
+  .marca{color:#fff;line-height:1}
+  .marca strong{display:block;font-family:'Open Sans',sans-serif;font-weight:800;font-size:40px;letter-spacing:.02em}
+  .marca span{display:block;font-size:11px;font-weight:700;letter-spacing:.5em;color:#D8B567;margin:6px 0 4px}
+  .marca em{display:block;font-style:normal;font-family:'Open Sans',sans-serif;font-weight:700;font-size:18px;letter-spacing:.03em}
+  .logos img.lema{height:30px;width:auto}
+
+  main{max-width:720px;margin:-56px auto 0;padding:0 16px 40px;position:relative;z-index:2}
+  .card{background:var(--card);border-radius:18px;box-shadow:0 10px 30px rgba(14,59,71,.08),0 2px 6px rgba(14,59,71,.05);padding:28px 24px;margin-bottom:18px}
+
+  /* ---------- selo ---------- */
+  .status{display:flex;align-items:center;gap:16px}
+  .status .icone{flex:0 0 56px;height:56px;border-radius:50%;background:var(--verde-bg);display:grid;place-items:center}
+  .status .icone svg{width:30px;height:30px;stroke:var(--verde)}
+  .status small{display:block;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--verde)}
+  .status h1{font-family:'Open Sans',sans-serif;font-weight:800;font-size:clamp(22px,5vw,30px);color:var(--roxo-escuro);line-height:1.15}
+  .status p{color:var(--suave);font-size:15px;margin-top:4px}
+
+  /* ---------- dados ---------- */
+  h2{font-family:'Open Sans',sans-serif;font-weight:700;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--roxo-marca);margin-bottom:14px}
+  .curso{font-family:'Open Sans',sans-serif;font-weight:800;font-size:20px;color:var(--roxo-escuro);line-height:1.25}
+  .curso-sub{color:var(--suave);font-size:15px;margin:4px 0 20px}
+  dl{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 20px}
+  dl div{border-top:1px solid var(--linha);padding-top:10px}
+  dt{font-size:12px;color:var(--suave);text-transform:uppercase;letter-spacing:.06em}
+  dd{font-weight:500;font-size:15px;margin-top:2px}
+  .codigo{font-family:ui-monospace,Menlo,Consolas,monospace;letter-spacing:.04em}
+
+  /* ---------- conteúdo programático ---------- */
+  .blocos{display:grid;gap:14px}
+  .bloco h3{font-size:15px;font-weight:700;color:var(--roxo-escuro);margin-bottom:6px;display:flex;gap:8px;align-items:baseline}
+  .bloco h3 span{font-size:12px;font-weight:700;color:#fff;background:var(--roxo-marca);border-radius:999px;padding:1px 8px}
+  .bloco ul{list-style:none;padding-left:4px}
+  .bloco li{font-size:14px;color:var(--suave);padding:3px 0 3px 14px;position:relative}
+  .bloco li::before{content:"";position:absolute;left:0;top:11px;width:6px;height:6px;border-radius:50%;background:var(--roxo-marca)}
+  .bloco li strong{color:var(--texto);font-weight:500}
+
+  /* ---------- certificados emitidos ---------- */
+  .busca{position:relative;margin-bottom:12px;display:block}
+  .busca input{width:100%;padding:12px 14px 12px 40px;border:1px solid var(--linha);border-radius:12px;font:inherit;font-size:15px;color:var(--texto);background:#FCFBF8}
+  .busca input:focus{outline:2px solid var(--roxo-marca);outline-offset:1px;background:#fff}
+  .busca svg{position:absolute;left:13px;top:50%;transform:translateY(-50%);width:18px;height:18px;stroke:var(--suave)}
+  ul.alunos{list-style:none}
+  ul.alunos li{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:11px 4px;border-bottom:1px solid var(--linha);font-size:15px}
+  ul.alunos li:last-child{border-bottom:none}
+  .ch{flex:0 0 auto;font-size:13px;font-weight:700;color:var(--roxo-escuro);background:var(--lilas);border-radius:999px;padding:3px 10px}
+  .vazio{display:none;color:var(--suave);font-size:14px;padding:12px 4px}
+  .nota{font-size:13px;color:var(--suave);margin-top:14px}
+
+  /* ---------- emissora ---------- */
+  .assina{display:flex;align-items:center;gap:14px}
+  .assina .bar{width:4px;align-self:stretch;border-radius:4px;background:var(--roxo-marca)}
+  .assina strong{display:block;font-size:16px}
+  .assina span{font-size:14px;color:var(--suave)}
+
+  footer{text-align:center;font-size:13px;color:var(--suave);padding:8px 16px 32px}
+  footer a{color:var(--roxo-escuro);font-weight:500;text-decoration:none;border-bottom:1px solid var(--roxo-marca)}
+  footer .cnpj{margin-top:10px;font-size:12px;letter-spacing:.02em;opacity:.85}
+
+  @media (max-width:520px){
+    dl{grid-template-columns:1fr}
+    .marca strong{font-size:32px}.marca em{font-size:15px}
+    .logos img.lema{height:22px}
+    .card{padding:22px 18px}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logos">
+    <div class="marca"><strong>RPPS</strong><span>PARA</span><em>CONSELHEIROS</em></div>
+    <img class="lema" src="data:image/png;base64,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" alt="LEMA Edu">
+  </div>
+</header>
+
+<main>
+
+  <section class="card">
+    <div class="status">
+      <div class="icone" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
+      </div>
+      <div>
+        <small>Certificado autêntico</small>
+        <h1>Certificado válido</h1>
+        <p>Emitido pela <strong>LEMA Educação</strong> em <strong id="emissao-extenso"></strong>.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Dados da turma</h2>
+    <p class="curso">RPPS PARA CONSELHEIROS</p>
+    <p class="curso-sub">Previdência, governança, controle e investimentos no RPPS</p>
+    <dl>
+      <div><dt>Promoção</dt><dd id="promocao"></dd></div>
+      <div><dt>Modalidade</dt><dd id="modalidade"></dd></div>
+      <div><dt>Período</dt><dd id="periodo"></dd></div>
+      <div><dt>Carga horária</dt><dd id="carga"></dd></div>
+      <div><dt>Data de emissão</dt><dd id="emissao"></dd></div>
+      <div><dt>Código da turma</dt><dd class="codigo" id="codigo"></dd></div>
+    </dl>
+  </section>
+
+  <section class="card">
+    <h2>Conteúdo programático</h2>
+    <div class="blocos">
+      <div class="bloco"><h3><span>1</span>Previdência e Gestão Atuarial</h3><ul>
+        <li><strong>Fundamentos da Previdência Social</strong>: RGPS, RPPS e previdência complementar; EC 103/2019; extinção do RPPS</li>
+        <li><strong>Gestão Atuarial do RPPS</strong>: avaliação atuarial e plano de custeio; fluxos atuariais e meta atuarial</li>
+      </ul></div>
+      <div class="bloco"><h3><span>2</span>Funcionamento, Governança e Controle</h3><ul>
+        <li><strong>Funcionamento do RPPS</strong>: organização (Lei 9.717/1998); conselhos e comitê de investimentos; decisão colegiada</li>
+        <li><strong>Controle Interno e Externo</strong>: conselho fiscal; Secretaria de Previdência; Tribunal de Contas e Ministério Público</li>
+      </ul></div>
+      <div class="bloco"><h3><span>3</span>Economia e Política de Investimentos</h3><ul>
+        <li><strong>Noções de Economia</strong>: inflação (IPCA e IGP-M) e metas; Selic, Copom e CDI</li>
+        <li><strong>Política de Investimentos</strong>: modelo de gestão e estratégia de alocação; credenciamento; plano de contingência (Resolução CMN 5.272/2025)</li>
+      </ul></div>
+      <div class="bloco"><h3><span>4</span>Regularidade e Certificações</h3><ul>
+        <li><strong>CRP</strong>: critérios de regularidade; CADPREV; DAIR e DPIN</li>
+        <li><strong>Pró-Gestão RPPS</strong> e <strong>Certificação Profissional dos RPPS</strong></li>
+      </ul></div>
+    </div>
+  </section>
+
+  <section class="card" id="sec-alunos">
+    <h2>Certificados emitidos (<span id="total">0</span>)</h2>
+    <label class="busca">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+      <input id="filtro" type="search" placeholder="Buscar pelo nome do participante" aria-label="Buscar pelo nome do participante">
+    </label>
+    <ul class="alunos" id="lista"></ul>
+    <p class="vazio" id="vazio">Nenhum participante encontrado com esse nome. Em caso de dúvida, fale com a LEMA Educação.</p>
+  </section>
+
+  <section class="card">
+    <h2>Instituição emissora</h2>
+    <div class="assina">
+      <div class="bar"></div>
+      <div>
+        <strong>LEMA Educação</strong>
+        <span>LEMA Treinamentos Ltda · CNPJ 35.826.836/0001-24</span>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  Dúvidas sobre este certificado? Fale com a LEMA Educação pelo
+  <a href="https://wa.me/5585991513323" target="_blank" rel="noopener">WhatsApp (85) 99151-3323</a>
+  <p class="cnpj">LEMA Treinamentos Ltda · CNPJ 35.826.836/0001-24</p>
+</footer>
+
+<script>
+/* =====================================================================
+   DADOS DA TURMA — edite só este bloco
+   - emissao: data no formato AAAA-MM-DD
+   - alunos: ["Nome Completo", "carga"]; deixe a lista vazia [] para
+     esconder a seção "Certificados emitidos"
+   ===================================================================== */
+var DADOS = {
+  promocao:   "",   // nome do RPPS/cliente; vazio = campo escondido
+  modalidade: "Remota",
+  periodo:    "22 de outubro de 2026, das 14h às 17h",
+  carga:      "3 horas",
+  emissao:    "2026-10-27",
+  codigo:     "RPPS-CONSELHEIROS-2210",
+  alunos: [
+    ["Cledjane Lira de Oliveira", "3h"],
+    ["Eliene Azevedo de Lucena", "3h"],
+    ["Francinilson Maria do Nascimento", "3h"],
+    ["Genoclézia Mázia Mafra da Rocha", "3h"],
+    ["Gerlânia de Azevedo Borges", "3h"],
+    ["Ivanilda Aparecida de Oliveira", "3h"],
+    ["Iza Mércia da Silva Santos", "3h"],
+    ["Maria de Fátima Costa de Oliveira", "3h"],
+    ["Maria Márcia de Medeiros Silva", "3h"],
+    ["Maria Tereza Bezerra Leite", "3h"],
+    ["Matheus Azevedo da Silva Leão", "3h"],
+    ["Milena Pereira de Medeiros", "3h"],
+    ["Rejane Maria de Azevedo Medeiros", "3h"],
+  ]
+};
+/* ===================================================================== */
+
+(function(){
+  var meses=['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+  var p=DADOS.emissao.split('-');
+  function set(id,v){document.getElementById(id).textContent=v;}
+  set('emissao-extenso', (+p[2])+' de '+meses[+p[1]-1]+' de '+p[0]);
+  set('emissao', p[2]+'/'+p[1]+'/'+p[0]);
+  set('promocao',DADOS.promocao);
+  if(!DADOS.promocao) document.getElementById('promocao').parentNode.style.display='none'; set('modalidade',DADOS.modalidade);
+  set('periodo',DADOS.periodo); set('carga',DADOS.carga); set('codigo',DADOS.codigo);
+
+  var lista=document.getElementById('lista');
+  if(!DADOS.alunos.length){document.getElementById('sec-alunos').style.display='none';return;}
+  set('total',DADOS.alunos.length);
+  DADOS.alunos.forEach(function(a){
+    var li=document.createElement('li'); li.appendChild(document.createTextNode(a[0]+' '));
+    var s=document.createElement('span'); s.className='ch'; s.textContent=a[1]; li.appendChild(s);
+    lista.appendChild(li);
+  });
+  var campo=document.getElementById('filtro'), vazio=document.getElementById('vazio');
+  var itens=[].slice.call(lista.children);
+  function norm(s){return s.normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase();}
+  campo.addEventListener('input',function(){
+    var q=norm(campo.value.trim()), n=0;
+    itens.forEach(function(li){var ok=norm(li.firstChild.textContent).indexOf(q)>-1;li.style.display=ok?'':'none';if(ok)n++;});
+    vazio.style.display=n?'none':'block';
+  });
+})();
+</script>
+</body>
+</html>
