@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LEMA Edu · Painel Comercial · Novembro/2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Poppins:wght@300;400;500;600;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --azul:#38389C; --rosa:#FF0095; --amarelo:#FFCD00; --eletrico:#0547FF;
+    --branco:#FFFFFF; --escuro:#2E2E5C; --cinza:#6B6B8F; --claro:#E9E9F6; --linha:#D5D5EA;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Poppins',sans-serif;color:var(--escuro);background:#fff;min-height:100vh;position:relative;overflow-x:hidden}
+  /* fundo geométrico discreto */
+  body::before{content:"";position:fixed;right:-180px;top:-180px;width:560px;height:560px;border-radius:50%;border:1.5px solid var(--linha);z-index:0}
+  body::after{content:"";position:fixed;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;border:1.5px solid var(--claro);z-index:0}
+  .wrap{position:relative;z-index:1;max-width:1320px;margin:0 auto;padding:0 40px 60px}
+
+  /* cabeçalho diagonal */
+  header{position:relative;background:var(--azul);color:#fff;overflow:hidden;padding:34px 40px 70px;clip-path:polygon(0 0,100% 0,100% 72%,0 100%)}
+  header .diag-rosa{position:absolute;right:-40px;top:0;width:280px;height:100%;background:var(--rosa);transform:skewX(-24deg);transform-origin:top}
+  header .diag-amarelo{position:absolute;right:210px;top:0;width:28px;height:100%;background:var(--amarelo);transform:skewX(-24deg);transform-origin:top}
+  header .dots{position:absolute;left:52%;top:26px;display:grid;grid-template-columns:repeat(8,6px);gap:10px;opacity:.35}
+  header .dots i{width:6px;height:6px;border-radius:50%;background:#fff;display:block}
+  .head-inner{position:relative;max-width:1240px;margin:0 auto;display:flex;justify-content:space-between;align-items:flex-end;gap:24px}
+  .kicker{font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:var(--amarelo);font-weight:600;margin-bottom:10px}
+  h1{font-family:'Syncopate',sans-serif;font-weight:700;font-size:36px;letter-spacing:.06em;line-height:1.15;text-transform:uppercase}
+  h1 span{display:inline-block;border-bottom:5px solid var(--amarelo);padding-bottom:4px}
+  .head-sub{margin-top:12px;font-weight:300;font-size:15px;opacity:.9}
+  .marca{margin-right:300px;font-family:'Syncopate',sans-serif;font-size:18px;letter-spacing:.12em;white-space:nowrap;position:relative;z-index:2}
+  .marca small{display:block;font-family:'Poppins';font-size:11px;letter-spacing:.04em;font-weight:300;opacity:.9;margin-top:4px;text-align:right}
+
+  /* abas */
+  .tabs{display:flex;gap:8px;margin:-28px 0 30px;position:relative;z-index:3}
+  .tab{font-family:'Syncopate',sans-serif;font-size:12px;letter-spacing:.12em;text-transform:uppercase;padding:14px 22px;border-radius:14px;border:none;cursor:pointer;background:#fff;color:var(--azul);box-shadow:0 6px 20px rgba(56,56,156,.14);transition:.2s}
+  .tab.ativa{background:var(--eletrico);color:#fff}
+  .tab:hover:not(.ativa){transform:translateY(-2px)}
+  .painel{display:none}
+  .painel.ativo{display:block;animation:sobe .35s ease}
+  @keyframes sobe{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+  h2{font-family:'Syncopate',sans-serif;font-size:17px;letter-spacing:.1em;text-transform:uppercase;color:var(--escuro);margin-bottom:6px}
+  .intro{color:var(--cinza);font-size:14px;margin-bottom:22px}
+  .sec{margin-top:42px}
+
+  /* KPIs */
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+  .kpi{background:#fff;border-radius:18px;padding:22px 24px;box-shadow:0 8px 28px rgba(46,46,92,.08);position:relative;overflow:hidden}
+  .kpi::before{content:"";position:absolute;left:0;top:0;width:6px;height:100%;background:var(--c,var(--azul))}
+  .kpi .rot{font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:var(--cinza);font-weight:500}
+  .kpi .val{font-size:30px;font-weight:800;margin-top:6px;color:var(--escuro);line-height:1.1}
+  .kpi .det{font-size:12.5px;color:var(--cinza);margin-top:6px}
+  .kpi.destaque{background:var(--azul)}
+  .kpi.destaque .rot,.kpi.destaque .det{color:#d9d9f3}
+  .kpi.destaque .val{color:#fff}
+
+  /* barra de composição */
+  .comp{display:flex;height:40px;border-radius:12px;overflow:hidden;background:var(--claro);margin-top:6px}
+  .comp div{display:flex;align-items:center;justify-content:center;color:#fff;font-size:12.5px;font-weight:600;white-space:nowrap;transition:width .4s ease;overflow:hidden}
+  .legenda{display:flex;gap:22px;flex-wrap:wrap;margin-top:12px;font-size:13px;color:var(--cinza)}
+  .legenda span{display:flex;align-items:center;gap:8px}
+  .legenda i{width:12px;height:12px;border-radius:4px;display:inline-block}
+
+  /* grid duas colunas */
+  .duo{display:grid;grid-template-columns:1.35fr 1fr;gap:24px;margin-top:42px}
+  .card{background:#fff;border-radius:20px;padding:26px 28px;box-shadow:0 8px 28px rgba(46,46,92,.08)}
+  .card.azul-claro{background:var(--claro);box-shadow:none}
+
+  /* barras por turma */
+  .barra-linha{display:grid;grid-template-columns:230px 1fr 92px;align-items:center;gap:12px;margin:9px 0;font-size:13px}
+  .barra-linha .nm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--escuro);font-weight:500}
+  .barra-trilho{height:14px;background:var(--claro);border-radius:8px;overflow:hidden}
+  .barra-trilho div{height:100%;border-radius:8px;transition:width .4s ease}
+  .barra-linha .vl{text-align:right;font-weight:600}
+
+  /* agenda */
+  .agenda{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-top:8px}
+  .agenda .dow{font-size:11px;text-transform:uppercase;letter-spacing:.08em;text-align:center;color:var(--cinza);font-weight:600;padding-bottom:4px}
+  .dia{min-height:58px;border-radius:10px;background:#fff;padding:5px 6px;font-size:11px;position:relative}
+  .dia.vazio{background:transparent}
+  .dia .n{font-weight:600;color:var(--cinza);font-size:11px}
+  .dia.hoje{outline:2px solid var(--eletrico)}
+  .pill{display:block;margin-top:3px;border-radius:5px;height:7px}
+
+  /* tabela */
+  table{width:100%;border-collapse:separate;border-spacing:0 8px;font-size:13.5px}
+  th{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--cinza);text-align:left;padding:4px 12px;font-weight:600}
+  td{background:#fff;padding:14px 12px;border-top:1px solid var(--claro);border-bottom:1px solid var(--claro)}
+  td:first-child{border-left:1px solid var(--claro);border-radius:12px 0 0 12px}
+  td:last-child{border-right:1px solid var(--claro);border-radius:0 12px 12px 0}
+  tr.linha:hover td{background:#fafaff}
+  .turma-nm{font-weight:600;color:var(--escuro)}
+  .turma-loc{font-size:12px;color:var(--cinza)}
+  .tag{display:inline-block;font-size:11px;font-weight:600;padding:3px 9px;border-radius:20px;background:var(--claro);color:var(--azul)}
+  .tag.pres{background:#FFF4CC;color:#7a6200}
+  .tag.grav{background:#FFE0F1;color:#a1005e}
+  .num{text-align:right;font-variant-numeric:tabular-nums}
+  select.st{font-family:'Poppins';font-size:12.5px;font-weight:600;padding:7px 30px 7px 12px;border-radius:20px;border:none;cursor:pointer;appearance:none;color:#fff;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='white' stroke-width='1.6' fill='none'/%3E%3C/svg%3E");
+    background-repeat:no-repeat;background-position:right 12px center}
+  select.st option{color:var(--escuro);background:#fff}
+  .dica{font-size:12px;color:var(--cinza);margin-top:8px;font-style:italic}
+
+  tr.det td{background:var(--claro);border:none;padding:14px 18px}
+  .munis{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
+  .mun{background:#fff;border-radius:12px;padding:10px 14px;font-size:12.5px}
+  .mun b{display:block;font-size:13px;color:var(--escuro)}
+  .mun .o{color:var(--cinza)}
+  .turma-nm{cursor:pointer}
+  .turma-nm .seta{display:inline-block;color:var(--eletrico);margin-right:6px;transition:.2s;font-size:11px}
+  tr.aberta .seta{transform:rotate(90deg)}
+  .com-linha{display:grid;grid-template-columns:90px 1fr 120px;gap:12px;align-items:center;margin:12px 0;font-size:13.5px}
+  .com-linha .nm{font-weight:600}
+  .com-trilho{height:22px;background:var(--claro);border-radius:8px;overflow:hidden;display:flex}
+  .com-trilho div{height:100%;transition:width .4s}
+  .com-linha .vl{text-align:right;font-weight:600}
+  .funil{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:16px}
+  .funil div{border-radius:14px;padding:14px;text-align:center}
+  .funil b{display:block;font-size:26px;font-weight:800}
+  .funil span{font-size:12px}
+  .funil span b{display:inline;font-size:inherit;font-weight:700}
+  /* atenção */
+  .alertas{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .alerta{border-radius:18px;padding:22px 24px;color:#fff;position:relative;overflow:hidden}
+  .alerta h3{font-family:'Syncopate',sans-serif;font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px}
+  .alerta p{font-size:13.5px;line-height:1.55;font-weight:300}
+  .alerta b{font-weight:600}
+  .alerta::after{content:"";position:absolute;right:-30px;bottom:-30px;width:110px;height:110px;border-radius:50%;border:2px solid rgba(255,255,255,.3)}
+
+  /* aba 2 */
+  .frentes{display:grid;grid-template-columns:repeat(2,1fr);gap:22px}
+  .frente{background:#fff;border-radius:20px;padding:28px 30px;box-shadow:0 8px 28px rgba(46,46,92,.08);position:relative;overflow:hidden}
+  .frente .topo{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+  .ico{width:46px;height:46px;border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .ico svg{width:24px;height:24px;stroke-width:1.8;fill:none}
+  .frente h3{font-family:'Syncopate',sans-serif;font-size:14px;letter-spacing:.08em;text-transform:uppercase;color:var(--escuro);line-height:1.35}
+  .frente .status{display:inline-block;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;padding:4px 10px;border-radius:20px;margin-bottom:12px}
+  .frente p{font-size:14px;line-height:1.6;color:var(--escuro)}
+  .frente ul{list-style:none;margin-top:12px}
+  .frente li{font-size:13.5px;line-height:1.55;padding:6px 0 6px 22px;position:relative;color:var(--escuro)}
+  .frente li::before{content:"";position:absolute;left:2px;top:13px;width:8px;height:8px;border-radius:2px;background:var(--amarelo);transform:rotate(45deg)}
+  .frente.larga{grid-column:1/-1}
+
+  .fluxo{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:18px;position:relative}
+  .passo{position:relative;padding:0 14px 0 0}
+  .passo .bola{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;font-size:15px;position:relative;z-index:2}
+  .passo::before{content:"";position:absolute;left:38px;right:0;top:18px;height:2px;background:var(--linha)}
+  .passo:last-child::before{display:none}
+  .passo h4{font-size:13.5px;font-weight:600;margin:12px 0 4px;color:var(--escuro)}
+  .passo p{font-size:12.5px;line-height:1.5;color:var(--cinza)}
+  .passo .quando{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--eletrico);margin-top:8px}
+
+  .citacao{margin-top:42px;background:var(--azul);color:#fff;border-radius:22px;padding:34px 40px;position:relative;overflow:hidden;display:flex;justify-content:space-between;align-items:center;gap:30px}
+  .citacao::before{content:"";position:absolute;right:120px;top:-20px;width:26px;height:140%;background:var(--amarelo);transform:skewX(-24deg)}
+  .citacao::after{content:"";position:absolute;right:-40px;top:-20px;width:150px;height:140%;background:var(--rosa);transform:skewX(-24deg)}
+  .citacao .q{font-family:'Syncopate',sans-serif;font-size:19px;letter-spacing:.06em;text-transform:uppercase;line-height:1.4;position:relative;z-index:1;max-width:760px}
+  .citacao .q em{font-style:normal;color:var(--amarelo)}
+
+  footer{margin-top:50px;padding-top:18px;border-top:1px solid var(--linha);display:flex;justify-content:space-between;font-size:12px;color:var(--cinza)}
+  footer .m{font-family:'Syncopate',sans-serif;letter-spacing:.12em;color:var(--azul);font-size:12px}
+
+  @media (max-width:1000px){
+    .marca{margin-right:0;display:none}
+    .kpis,.alertas{grid-template-columns:1fr 1fr}
+    .duo,.frentes{grid-template-columns:1fr}
+    .fluxo{grid-template-columns:1fr 1fr;row-gap:24px}
+    .barra-linha{grid-template-columns:150px 1fr 80px}
+    h1{font-size:26px}
+  }
+  @media print{
+    .painel{display:block!important;page-break-after:always}
+    .tabs{display:none}
+    header{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="diag-rosa"></div><div class="diag-amarelo"></div>
+  <div class="dots" aria-hidden="true"></div>
+  <div class="head-inner">
+    <div>
+      <div class="kicker">Reunião comercial · 09/11/2026</div>
+      <h1><span>Painel de novembro</span></h1>
+      <div class="head-sub">Turmas, receita prevista e frentes em andamento</div>
+    </div>
+    <div class="marca">LEMA EDU<small>Capacitação com quem entende.</small></div>
+  </div>
+</header>
+
+<div class="wrap">
+  <nav class="tabs">
+    <button class="tab ativa" data-aba="turmas">01 · Turmas e receita</button>
+    <button class="tab" data-aba="frentes">02 · Atividades e estratégias</button>
+  </nav>
+
+  <!-- ===================== ABA 1 ===================== -->
+  <section class="painel ativo" id="turmas">
+    <h2>Visão geral do mês</h2>
+    <p class="intro">Os números se recalculam quando o status de uma turma é alterado na tabela abaixo.</p>
+
+    <div class="kpis" id="kpis"></div>
+
+    <div class="sec">
+      <h2>Composição da receita</h2>
+      <p class="intro">Quanto do mês já está garantido e quanto depende de confirmação.</p>
+      <div class="comp" id="comp"></div>
+      <div class="legenda" id="legenda"></div>
+    </div>
+
+    <div class="duo">
+      <div class="card">
+        <h2>Receita por turma</h2>
+        <p class="intro">Valores em R$. Turmas sem valor ainda não têm recurso garantido.</p>
+        <div id="barras"></div>
+      </div>
+      <div class="card azul-claro">
+        <h2>Agenda de novembro</h2>
+        <p class="intro">Dias com aula ou entrega, na cor do status.</p>
+        <div class="agenda" id="agenda"></div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <h2>Pontos de atenção</h2>
+      <p class="intro">O que precisa de ação do comercial esta semana.</p>
+      <div class="alertas">
+        <div class="alerta" style="background:var(--rosa)">
+          <h3>Aguardando RPPS</h3>
+          <p><b>Orocó/PE</b> já tem <b>22 inscritos</b> de 4 municípios (<b>R$ 15.378</b>), mas os RPPS ainda não confirmaram. Turma em 18 e 19/11, com a Ádila.</p>
+        </div>
+        <div class="alerta" style="background:var(--eletrico)">
+          <h3>Boletos pendentes</h3>
+          <p>Certifica Online (12/11): <b>Itapiúna/CE</b> ainda precisa <b>solicitar boleto</b>, e o de <b>Porto Calvo/AL</b> foi pedido em 06/11. A turma começa na quinta.</p>
+        </div>
+        <div class="alerta" style="background:var(--azul)">
+          <h3>Sem recurso · risco</h3>
+          <p><b>IA para RPPS</b> e <b>Guarabira/PB</b> estão sem recurso, e uma delas deve ser <b>adiada</b>. <b>Fátima do Sul/MS</b> não fechou: vamos buscar outra praça.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="duo">
+      <div class="card">
+        <h2>Receita por comercial</h2>
+        <p class="intro">Soma por município atendido. A parte clara depende de confirmação.</p>
+        <div id="porComercial"></div>
+      </div>
+      <div class="card azul-claro">
+        <h2>Leitura rápida</h2>
+        <p class="intro">O que os números dizem.</p>
+        <div id="leitura" style="font-size:13.5px;line-height:1.65"></div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <h2>Turmas do mês</h2>
+      <p class="intro">Clique no nome da turma para ver os municípios. Mude o status para simular cenários.</p>
+      <table>
+        <thead><tr>
+          <th>Turma</th><th>Formato</th><th>Datas</th><th class="num">Inscritos</th><th>Responsável</th><th class="num">Valor</th><th>Status</th>
+        </tr></thead>
+        <tbody id="tabela"></tbody>
+      </table>
+      <p class="dica">Fontes: planilha de turmas e planilha de leads de novembro. Os inscritos vêm da planilha de leads. Turmas sem número ou valor estão em branco nas duas planilhas.</p>
+    </div>
+  </section>
+
+  <!-- ===================== ABA 2 ===================== -->
+  <section class="painel" id="frentes">
+    <h2>Frentes em andamento</h2>
+    <p class="intro">Estratégias rodando em paralelo às turmas de novembro.</p>
+
+    <div class="frentes">
+      <div class="frente">
+        <div class="topo">
+          <div class="ico" style="background:#FFE0F1"><svg viewBox="0 0 24 24" stroke="#FF0095"><path d="M3 9h18l-1.5 11h-15z"/><path d="M8 9V6a4 4 0 0 1 8 0v3"/><path d="M9.5 14.5l5-1"/></svg></div>
+          <h3>Black Friday<br>dos cursos</h3>
+        </div>
+        <span class="status" style="background:#FFE0F1;color:#a1005e">Em execução</span>
+        <p>Campanha de Black Friday com os cursos da LEMA Edu, já rodando.</p>
+        <ul>
+          <li>Oferta aplicada sobre o catálogo de cursos.</li>
+          <li>Ação de vendas concentrada em novembro.</li>
+          <li>Leads da campanha ainda não contabilizados: ficam fora da prospecção direta.</li>
+        </ul>
+      </div>
+
+      <div class="frente">
+        <div class="topo">
+          <div class="ico" style="background:#E9E9F6"><svg viewBox="0 0 24 24" stroke="#38389C"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
+          <h3>Prospecção das<br>turmas abertas</h3>
+        </div>
+        <span class="status" style="background:#E9E9F6;color:#38389C">Em andamento</span>
+        <p>Processo de prospecção para fechar as turmas que ainda não estão confirmadas.</p>
+        <ul>
+          <li><b>Orocó/PE:</b> 4 de 10 municípios com inscritos. Faltam Santa Maria da Boa Vista, Cabrobó, Parnamirim, Petrolina, Afrânio e Dormentes.</li>
+          <li><b>IA para RPPS</b> e <b>Guarabira/PB:</b> sem recurso. Uma delas deve ser adiada.</li>
+          <li><b>Fátima do Sul/MS</b> (05 e 06/11) não fechou turma. De 14 municípios contatados, 11 ficaram aguardando e 3 não vão participar. Buscar outra praça para a turma.</li>
+        </ul>
+      </div>
+
+      <div class="frente larga">
+        <div class="topo">
+          <div class="ico" style="background:#E9E9F6"><svg viewBox="0 0 24 24" stroke="#0547FF"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg></div>
+          <h3>Prospecção direta da equipe · treinamentos</h3>
+        </div>
+        <span class="status" style="background:#E9E9F6;color:var(--eletrico)">Em andamento · sem contar a Black Friday</span>
+        <p>Contatos que a equipe comercial trabalha diretamente, um a um, para os treinamentos de novembro. Os leads da Black Friday ainda não foram contabilizados e entram à parte.</p>
+        <div class="funil" style="grid-template-columns:repeat(4,1fr)">
+          <div style="background:var(--azul);color:#fff"><b>56</b><span>municípios trabalhados</span></div>
+          <div style="background:var(--eletrico);color:#fff"><b>54</b><span>contatos diretos</span></div>
+          <div style="background:#FFF4CC;color:#7a6200"><b>31</b><span>já inscritos</span></div>
+          <div style="background:#FFE0F1;color:#a1005e"><b>23</b><span>em negociação ou retorno</span></div>
+        </div>
+        <table style="margin-top:14px">
+          <thead><tr><th>Praça / turma</th><th class="num">Municípios</th><th class="num">Contatos diretos</th><th>Situação</th><th>Comercial</th></tr></thead>
+          <tbody>
+            <tr><td>Certifica Online · 12/11</td><td class="num">6</td><td class="num">13</td><td>13 inscritos · boletos em andamento</td><td>Ádila · Elison</td></tr>
+            <tr><td>Certifica Online · 18/11</td><td class="num">2</td><td class="num">9</td><td>9 inscritos de Quixadá · Tangará (11) veio pelo RPPS</td><td>Elison</td></tr>
+            <tr><td>Certifica · Princesa Isabel/PB</td><td class="num">2</td><td class="num">9</td><td>9 inscritos</td><td>Gabriel</td></tr>
+            <tr><td>Certifica · Orocó/PE</td><td class="num">10</td><td class="num">—</td><td>4 municípios com inscritos (22) · contato pelo RPPS</td><td>Ádila</td></tr>
+            <tr><td>RPPS Invest · Governador Valadares/MG</td><td class="num">22</td><td class="num">9</td><td>3 aguardando retorno · 2 ligar · 2 sem recurso/interesse · 2 novos</td><td>Equipe</td></tr>
+            <tr><td>RPPS Invest · Fátima do Sul/MS</td><td class="num">14</td><td class="num">14</td><td>11 aguardando · 3 não vão · realocar turma</td><td>Equipe</td></tr>
+          </tbody>
+        </table>
+        <p class="dica">Contatos diretos = pessoas com nome e telefone ou e-mail na planilha de leads, sem repetir quem aparece em duas listas de Governador Valadares. Inscritos enviados pelo próprio RPPS (Orocó, Tangará) contam como inscritos, mas não como contatos diretos.</p>
+      </div>
+
+      <div class="frente larga">
+        <div class="topo">
+          <div class="ico" style="background:#E9E9F6"><svg viewBox="0 0 24 24" stroke="#38389C"><path d="M3 4h18l-7 8v6l-4 2v-8z"/></svg></div>
+          <h3>Funil · RPPS Invest Governador Valadares/MG</h3>
+        </div>
+        <span class="status" style="background:#E9E9F6;color:#38389C">Ampliação da turma · 23 e 24/11</span>
+        <p>A turma está confirmada (R$ 19.000). A prospecção na região é para trazer mais municípios. São 22 municípios mapeados.</p>
+        <div class="funil">
+          <div style="background:var(--claro);color:var(--escuro)"><b>15</b><span>ainda sem contato</span></div>
+          <div style="background:#FFF4CC;color:#7a6200"><b>2</b><span>ligar de novo<br>(Guanhães, Itabira)</span></div>
+          <div style="background:var(--eletrico);color:#fff"><b>3</b><span>aguardando retorno<br>(Gov. Valadares, Eng. Caldas, Cel. Fabriciano)</span></div>
+          <div style="background:#FFE0F1;color:#a1005e"><b>1</b><span>sem recurso agora<br>(Teófilo Otoni)</span></div>
+          <div style="background:#eee;color:#666"><b>1</b><span>sem interesse<br>(Sabinópolis)</span></div>
+        </div>
+      </div>
+
+      <div class="frente larga">
+        <div class="topo">
+          <div class="ico" style="background:#FFF4CC"><svg viewBox="0 0 24 24" stroke="#b38f00"><rect x="3" y="5" width="18" height="12" rx="2"/><path d="M10 9l4 2-4 2z"/><path d="M8 21h8"/></svg></div>
+          <h3>Imersão · liberação dos treinamentos</h3>
+        </div>
+        <span class="status" style="background:#FFF4CC;color:#7a6200">Entrega amanhã · 10/11</span>
+        <p>Os treinamentos da Imersão ficam disponíveis na plataforma amanhã. A entrega atrasou porque algumas aulas, as do Bruno Leitão, foram gravadas inteiras e ficaram grandes demais para subir de uma vez.</p>
+
+        <div class="fluxo">
+          <div class="passo">
+            <div class="bola" style="background:var(--azul)">1</div>
+            <h4>Subida das aulas</h4>
+            <p>Aulas da Imersão, incluindo as gravações longas do Bruno Leitão.</p>
+            <div class="quando">Até 10/11</div>
+          </div>
+          <div class="passo">
+            <div class="bola" style="background:var(--eletrico)">2</div>
+            <h4>Bônus para o Premium</h4>
+            <p>Treinamento de IA + Fundos Estressados (Dr. Bruno Bandeira) liberados para quem comprou a Imersão Premium.</p>
+            <div class="quando">Junto com a entrega</div>
+          </div>
+          <div class="passo">
+            <div class="bola" style="background:var(--rosa)">3</div>
+            <h4>Oferta no grupo</h4>
+            <p>Para quem não comprou o Premium, anunciar no mesmo grupo que o conteúdo está disponível.</p>
+            <div class="quando">Após a liberação</div>
+          </div>
+          <div class="passo">
+            <div class="bola" style="background:var(--amarelo);color:var(--escuro)">4</div>
+            <h4>Gerar desejo</h4>
+            <p>Os participantes veem que o conteúdo existe e percebem a necessidade, o que abre espaço para a venda do upgrade.</p>
+            <div class="quando">Conversão</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="frente larga" style="background:var(--claro);box-shadow:none">
+        <div class="topo">
+          <div class="ico" style="background:#fff"><svg viewBox="0 0 24 24" stroke="#0547FF"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4M8 15h3M13 15h3"/></svg></div>
+          <h3>PAC 2027 · Plano Anual de Capacitação</h3>
+        </div>
+        <span class="status" style="background:#fff;color:var(--eletrico)">Reuniões em andamento</span>
+        <p>Reuniões com os RPPS para montar o Plano Anual de Capacitação de 2027 e apresentar novos planos de treinamento.</p>
+        <div class="funil" style="grid-template-columns:repeat(4,1fr)">
+          <div style="background:var(--azul);color:#fff"><b>R$ 77.305</b><span>em propostas de PAC enviadas</span></div>
+          <div style="background:var(--eletrico);color:#fff"><b>5</b><span>RPPS em negociação</span></div>
+          <div style="background:#FFF4CC;color:#7a6200"><b>1</b><span>reunião esta semana<br>(Maringá/PR)</span></div>
+          <div style="background:#FFE0F1;color:#a1005e"><b>16</b><span>interessados para<br>agendar novas reuniões</span></div>
+        </div>
+        <table style="margin-top:14px">
+          <thead><tr><th>RPPS</th><th>Etapa</th><th>Demanda</th><th class="num">Proposta</th></tr></thead>
+          <tbody>
+            <tr><td><b>Caçador</b></td><td><span class="tag" style="background:var(--azul);color:#fff">Proposta enviada</span></td><td>IA + cursos base do Pró-Gestão</td><td class="num" style="font-weight:600">R$ 53.400</td></tr>
+            <tr><td><b>Teixeira Soares</b></td><td><span class="tag" style="background:var(--azul);color:#fff">Proposta enviada</span></td><td>—</td><td class="num" style="font-weight:600">R$ 23.905</td></tr>
+            <tr><td><b>Fazenda Rio Grande</b></td><td><span class="tag" style="background:var(--eletrico);color:#fff">Orçamento a enviar</span></td><td>—</td><td class="num">a definir</td></tr>
+            <tr><td><b>Brasília de Minas</b></td><td><span class="tag" style="background:var(--rosa);color:#fff">Reunião hoje · 09/11</span></td><td>IA + cursos base do Pró-Gestão</td><td class="num">a montar</td></tr>
+            <tr><td><b>Maringá/PR</b></td><td><span class="tag pres">Reunião esta semana</span></td><td>—</td><td class="num">—</td></tr>
+          </tbody>
+        </table>
+        <ul>
+          <li>Enviar o orçamento de Fazenda Rio Grande e montar a proposta de Brasília de Minas.</li>
+          <li>Preparar a reunião de Maringá/PR desta semana.</li>
+          <li>Contatar os 16 interessados para marcar as próximas reuniões de PAC.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="citacao">
+      <div class="q">Foco da semana: <em>fechar boletos</em> da turma de 12/11, <em>confirmar Orocó</em>, definir a turma adiada e <em>converter</em> a base da Imersão e <em>agendar</em> as reuniões de PAC 2027.</div>
+    </div>
+  </section>
+
+  <footer>
+    <span class="m">LEMA EDU</span>
+    <span>Painel comercial · novembro/2026 · uso interno</span>
+  </footer>
+</div>
+
+<script>
+const STATUS = {
+  conf:  {rot:'Confirmada',      cor:'#38389C'},
+  aguar: {rot:'Aguardando RPPS', cor:'#FF0095'},
+  prosp: {rot:'Em prospecção',   cor:'#0547FF'},
+  adiad: {rot:'Adiada',          cor:'#B9B9D3'},
+  nfech: {rot:'Não fechou',      cor:'#8E8EA8'}
+};
+const COMS = ['Ádila','Elison','Gabriel','Todos'];
+
+const turmas = [
+  {nm:'Certifica RPPS Online', loc:'12, 13, 18 e 19/nov', fmt:'Remoto', datas:'12, 13, 18 e 19/nov', dias:[12,13,18,19], st:'conf', munis:[
+    {m:'Águas Belas/PE', i:3, v:1577, o:'Boleto emitido', c:'Ádila'},
+    {m:'Porto Calvo/AL', i:2, v:1078, o:'Boleto solicitado em 06/11', c:'Ádila'},
+    {m:'Choró/CE', i:2, v:1198, o:'Boleto enviado', c:'Elison'},
+    {m:'Floresta/PR', i:3, v:1797, o:'Boleto enviado · 1 nome a completar', c:'Elison'},
+    {m:'Cantagalo/PR', i:3, v:1617, o:'Boleto enviado', c:'Elison'},
+    {m:'Itapiúna/CE', i:1, v:599, o:'Solicitar boleto', c:'Elison'}]},
+  {nm:'Certifica RPPS Online', loc:'18, 19, 25 e 26/nov', fmt:'Remoto', datas:'18, 19, 25 e 26/nov', dias:[18,19,25,26], st:'conf', munis:[
+    {m:'Quixadá/CE', i:9, v:5391, o:'', c:'Elison'},
+    {m:'Tangará/RN', i:11, v:6589, o:'', c:'Elison'}]},
+  {nm:'IA para RPPS', loc:'Online', fmt:'Remoto', datas:'17, 18 e 19/nov', dias:[17,18,19], insc:8, valor:null, resp:'Todos', st:'prosp'},
+  {nm:'Certifica RPPS', loc:'Guarabira/PB', fmt:'Presencial', datas:'17 e 18/nov', dias:[17,18], insc:8, valor:null, resp:'Todos', st:'prosp'},
+  {nm:'RPPS Invest', loc:'Governador Valadares/MG', fmt:'Presencial', datas:'23 e 24/nov', dias:[23,24], insc:14, valor:19000, resp:'Todos', st:'conf',
+    nota:'Prospecção regional em andamento para ampliar a turma (22 municípios mapeados).'},
+  {nm:'Certifica RPPS', loc:'Princesa Isabel/PB', fmt:'Presencial', datas:'24 e 25/nov', dias:[24,25], st:'conf', munis:[
+    {m:'Água Branca/PB', i:8, v:4792, o:'Dados do RPPS para faturamento recebidos', c:'Gabriel'},
+    {m:'Juru/PB', i:1, v:599, o:'Dados do RPPS para faturamento recebidos', c:'Gabriel'}]},
+  {nm:'Certifica RPPS', loc:'Orocó/PE', fmt:'Presencial', datas:'18 e 19/nov', dias:[18,19], st:'aguar', munis:[
+    {m:'Orocó/PE', i:10, v:6990, o:'', c:'Ádila'},
+    {m:'Terra Nova/PE', i:4, v:2796, o:'', c:'Ádila'},
+    {m:'Lagoa Grande/PE', i:4, v:2796, o:'', c:'Ádila'},
+    {m:'Belém de São Francisco/PE', i:4, v:2796, o:'', c:'Ádila'}],
+    nota:'Em prospecção: Santa Maria da Boa Vista, Cabrobó, Parnamirim, Petrolina, Afrânio e Dormentes.'},
+  {nm:'Certifica RPPS', loc:'Igarapé do Meio', fmt:'Gravado', datas:'Gravado', dias:[], insc:null, valor:7812, resp:'Ádila', st:'conf'},
+  {nm:'PAC Itapipoca', loc:'Gestão Estratégica', fmt:'Remoto', datas:'05/nov', dias:[5], insc:null, valor:5200, resp:'Elison', st:'conf'},
+  {nm:'PAC Itapipoca', loc:'Controle Interno', fmt:'Remoto', datas:'12/nov', dias:[12], insc:null, valor:5200, resp:'Elison', st:'conf'},
+  {nm:'RPPS Invest', loc:'Fátima do Sul/MS', fmt:'Presencial', datas:'05 e 06/nov', dias:[5,6], insc:null, valor:null, resp:'—', st:'nfech',
+    nota:'Turma não fechou: 14 municípios contatados, 11 aguardando e 3 não vão participar. Buscar outra praça.'}
+];
+// derivar totais de quem tem municípios
+turmas.forEach(t=>{ if(t.munis){ t.insc=t.munis.reduce((a,m)=>a+m.i,0); t.valor=t.munis.reduce((a,m)=>a+m.v,0);
+  t.resp=[...new Set(t.munis.map(m=>m.c))].join(' · '); } });
+
+const abertas = new Set();
+const brl = v => v==null ? '—' : v.toLocaleString('pt-BR',{style:'currency',currency:'BRL',maximumFractionDigits:0});
+const k = v => 'R$ ' + (v/1000).toLocaleString('pt-BR',{maximumFractionDigits:1}) + ' mil';
+const pend = s => s==='aguar'||s==='prosp';
+
+function render(){
+  const soma = f => turmas.filter(f).reduce((a,t)=>a+(t.valor||0),0);
+  const conf = soma(t=>t.st==='conf'), aguar = soma(t=>t.st==='aguar'), prosp = soma(t=>t.st==='prosp');
+  const n = s => turmas.filter(t=>t.st===s).length;
+  const ativos = turmas.filter(t=>t.st==='conf'||pend(t.st));
+  const inscConf = turmas.filter(t=>t.st==='conf').reduce((a,t)=>a+(t.insc||0),0);
+  const inscPend = turmas.filter(t=>pend(t.st)).reduce((a,t)=>a+(t.insc||0),0);
+
+  document.getElementById('kpis').innerHTML = `
+    <div class="kpi destaque"><div class="rot">Receita confirmada</div><div class="val">${brl(conf)}</div><div class="det">${n('conf')} turmas confirmadas</div></div>
+    <div class="kpi" style="--c:var(--rosa)"><div class="rot">Receita a confirmar</div><div class="val">${brl(aguar+prosp)}</div><div class="det">${n('aguar')} aguardando RPPS · ${n('prosp')} em prospecção (sem valor)</div></div>
+    <div class="kpi" style="--c:var(--eletrico)"><div class="rot">Potencial do mês</div><div class="val">${brl(conf+aguar+prosp)}</div><div class="det">se as turmas pendentes fecharem</div></div>
+    <div class="kpi" style="--c:var(--amarelo)"><div class="rot">Inscritos</div><div class="val">${inscConf+inscPend}</div><div class="det">${inscConf} em turmas confirmadas · ${inscPend} pendentes</div></div>`;
+
+  const total = conf+aguar+prosp || 1;
+  document.getElementById('comp').innerHTML = [['conf',conf],['aguar',aguar],['prosp',prosp]].filter(x=>x[1]>0).map(([s,v])=>
+    `<div style="width:${v/total*100}%;background:${STATUS[s].cor}">${v/total>0.12?k(v):''}</div>`).join('');
+  document.getElementById('legenda').innerHTML = Object.entries(STATUS).map(([s,o])=>
+    `<span><i style="background:${o.cor}"></i>${o.rot}: <b style="color:var(--escuro)">${brl(soma(t=>t.st===s))}</b> (${n(s)})</span>`).join('');
+
+  // por comercial
+  const pc = {}; COMS.forEach(c=>pc[c]={conf:0,pend:0});
+  turmas.forEach(t=>{
+    if(!(t.st==='conf'||pend(t.st))) return;
+    const chave = t.st==='conf'?'conf':'pend';
+    if(t.munis) t.munis.forEach(m=>pc[m.c][chave]+=m.v);
+    else if(pc[t.resp]) pc[t.resp][chave]+=(t.valor||0);
+  });
+  const maxC = Math.max(...COMS.map(c=>pc[c].conf+pc[c].pend));
+  document.getElementById('porComercial').innerHTML = COMS.map(c=>`
+    <div class="com-linha"><div class="nm">${c==='Todos'?'Equipe':c}</div>
+      <div class="com-trilho"><div style="width:${pc[c].conf/maxC*100}%;background:var(--azul)"></div><div style="width:${pc[c].pend/maxC*100}%;background:#F7B3D6"></div></div>
+      <div class="vl">${brl(pc[c].conf+pc[c].pend)}</div></div>`).join('') +
+    `<div class="legenda"><span><i style="background:var(--azul)"></i>Confirmado</span><span><i style="background:#F7B3D6"></i>A confirmar</span><span>"Equipe" = turmas lançadas como "Todos" (Governador Valadares)</span></div>`;
+
+  const pct = Math.round(conf/(conf+aguar+prosp||1)*100);
+  document.getElementById('leitura').innerHTML = `
+    <p>• <b>${pct}%</b> da receita prevista do mês já está confirmada.</p>
+    <p>• Orocó é a maior pendência: <b>${brl(aguar)}</b>, praticamente uma turma inteira à espera dos RPPS.</p>
+    <p>• As duas turmas online do Certifica somam <b>${turmas[0].insc+turmas[1].insc} inscritos</b> de 8 municípios.</p>
+    <p>• IA para RPPS e Guarabira têm <b>16 interessados</b>, mas ainda sem recurso.</p>`;
+
+  const max = Math.max(...turmas.map(t=>t.valor||0));
+  document.getElementById('barras').innerHTML = [...turmas].sort((a,b)=>(b.valor||0)-(a.valor||0)).map(t=>`
+    <div class="barra-linha">
+      <div class="nm" title="${t.nm} · ${t.loc}">${t.nm} · ${t.loc}</div>
+      <div class="barra-trilho"><div style="width:${(t.valor||0)/max*100}%;background:${STATUS[t.st].cor}"></div></div>
+      <div class="vl" style="color:${t.valor?'var(--escuro)':'var(--cinza)'}">${t.valor?k(t.valor):'sem valor'}</div>
+    </div>`).join('');
+
+  const dows = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+  let h = dows.map(d=>`<div class="dow">${d}</div>`).join('');
+  for(let i=0;i<new Date(2026,10,1).getDay();i++) h+='<div class="dia vazio"></div>';
+  for(let d=1; d<=30; d++){
+    const ev = turmas.filter(t=>t.dias.includes(d));
+    h += `<div class="dia ${d===9?'hoje':''}" title="${ev.map(e=>e.nm+' · '+e.loc+' ('+STATUS[e.st].rot+')').join('\n')}"><span class="n">${d}</span>${ev.map(e=>`<span class="pill" style="background:${STATUS[e.st].cor}"></span>`).join('')}</div>`;
+  }
+  document.getElementById('agenda').innerHTML = h;
+
+  const fmtTag = f => f==='Presencial'?'pres':f==='Gravado'?'grav':'';
+  document.getElementById('tabela').innerHTML = turmas.map((t,i)=>{
+    const temDet = t.munis||t.nota, ab = abertas.has(i);
+    let row = `<tr class="linha ${ab?'aberta':''}" style="${(t.st==='adiad'||t.st==='nfech')?'opacity:.6':''}">
+      <td><div class="turma-nm" data-i="${i}">${temDet?'<span class="seta">▶</span>':''}${t.nm}</div><div class="turma-loc">${t.loc}</div></td>
+      <td><span class="tag ${fmtTag(t.fmt)}">${t.fmt}</span></td>
+      <td>${t.datas}</td>
+      <td class="num">${t.insc ?? '—'}</td>
+      <td>${t.resp}</td>
+      <td class="num" style="font-weight:600">${brl(t.valor)}</td>
+      <td><select class="st" data-i="${i}" style="background-color:${STATUS[t.st].cor}">
+        ${Object.entries(STATUS).map(([s,o])=>`<option value="${s}" ${s===t.st?'selected':''}>${o.rot}</option>`).join('')}
+      </select></td></tr>`;
+    if(temDet && ab){
+      row += `<tr class="det"><td colspan="7">${t.munis?`<div class="munis">${t.munis.map(m=>`
+        <div class="mun"><b>${m.m}</b>${m.i} inscrito${m.i>1?'s':''} · ${brl(m.v)} · ${m.c}${m.o?`<div class="o">${m.o}</div>`:''}</div>`).join('')}</div>`:''}
+        ${t.nota?`<p style="font-size:13px;color:var(--escuro);margin-top:${t.munis?10:0}px">${t.nota}</p>`:''}</td></tr>`;
+    }
+    return row;
+  }).join('');
+  document.querySelectorAll('select.st').forEach(s=>s.onchange=e=>{turmas[+e.target.dataset.i].st=e.target.value;render();});
+  document.querySelectorAll('.turma-nm').forEach(el=>el.onclick=()=>{const i=+el.dataset.i; abertas.has(i)?abertas.delete(i):abertas.add(i); render();});
+}
+
+document.querySelector('.dots').innerHTML = '<i></i>'.repeat(24);
+document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('ativa',x===b));
+  document.querySelectorAll('.painel').forEach(p=>p.classList.toggle('ativo',p.id===b.dataset.aba));
+});
+render();
+</script>
+</body>
+</html>
